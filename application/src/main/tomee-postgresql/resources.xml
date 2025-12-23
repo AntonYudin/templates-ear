@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <Resource id="datasources/default-datasource" type="javax.sql.DataSource">
+    JdbcDriver = org.postgresql.Driver
+    JdbcUrl    = ${jdbc.postgresql.url}
+    UserName   = ${jdbc.postgresql.user}
+    Password   = ${jdbc.postgresql.password}
+    defaultAutoCommit = true
+	JtaManaged=true
+    testOnReturn = true
+    testWhileIdle = true
+    timeBetweenEvictionRunsMillis = 60
+    initialSize = 2
+    minIdle = 2
+    validationQuery = select 1
+  </Resource>
+</resources>
+

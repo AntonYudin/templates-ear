@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+
+	<!-- copyright (c) 2025 Anton Yudin -->
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.antonyudin.templates.ear</groupId>
+	<version>1.0</version>
+	<artifactId>project</artifactId>
+	<packaging>pom</packaging>
+
+	<name>EAR template</name>
+
+	<modules>
+		<module>module1</module>
+		<module>module2</module>
+		<module>persistence</module>
+		<module>application</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.war.plugin.version>3.4.0</maven.war.plugin.version>
+		<jupiter.version>5.13.0-M2</jupiter.version>
+		<maven.surefire.version>3.5.3</maven.surefire.version>
+		<maven.jar.version>3.4.2</maven.jar.version>
+		<maven.ear.plugin.version>3.3.0</maven.ear.plugin.version>
+		<maven.compiler.version>3.14.0</maven.compiler.version>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<maven.resources.version>3.4.0</maven.resources.version>
+		<jakarta.version>10.0.0</jakarta.version>
+		<glassfish.jakarta.faces.version>4.0.11</glassfish.jakarta.faces.version>
+		<template>default</template>
+		<postgresql.version>42.7.8</postgresql.version>
+		<mariadb.version>3.5.7</mariadb.version>
+		<hibernate.version>7.2.0.Final</hibernate.version>
+		<eclipselink.version>5.0.0-B13</eclipselink.version>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>production</id>
+		</profile>
+		<profile>
+			<id>mariadb</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<database.profile>mariadb</database.profile>
+			</properties>
+		</profile>
+		<profile>
+			<id>postgresql</id>
+			<properties>
+				<database.profile>postgresql</database.profile>
+			</properties>
+		</profile>
+		<profile>
+			<id>tomee</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<application.profile>tomee</application.profile>
+			</properties>
+		</profile>
+		<profile>
+			<id>wildfly</id>
+			<properties>
+				<application.profile>wildfly</application.profile>
+			</properties>
+		</profile>
+
+	</profiles>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<pluginManagement>
+			<plugins>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencyManagement>
+
+		<dependencies>
+
+			<dependency>
+				<groupId>jakarta.platform</groupId>
+				<artifactId>jakarta.jakartaee-api</artifactId>
+				<version>${jakarta.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>${jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.glassfish</groupId>
+				<artifactId>jakarta.faces</artifactId>
+				<version>${glassfish.jakarta.faces.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mariadb.jdbc</groupId>
+				<artifactId>mariadb-java-client</artifactId>
+				<version>${mariadb.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-jpamodelgen</artifactId>
+				<version>${hibernate.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.eclipse.persistence</groupId>
+				<artifactId>eclipselink</artifactId>
+				<version>${eclipselink.version}</version>
+			</dependency>
+
+		</dependencies>
+
+	</dependencyManagement>
+
+</project>
+

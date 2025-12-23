@@ -1,0 +1,66 @@
+<ui:composition
+	xmlns:f="jakarta.faces.core"
+	xmlns:h="jakarta.faces.html"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:jsf="jakarta.faces"
+	xmlns:passthrough="jakarta.faces.passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:userlocale="jakarta.faces.composite/userlocale"
+	template="/resources/layout/default.xhtml"
+>
+	<ui:param name="layoutEnabled" value="true"/>
+	<ui:param name="themeEnabled" value="true"/>
+
+	<ui:define name="pageTitle">
+		#{messages.index}
+	</ui:define>
+
+	<ui:define name="main-sections">
+		<h:form id="form" class="items">
+			<h:messages/>
+			<section jsf:rendered="#{not empty search.results}">
+				<h2>#{messages.search_results_for} #{search.query}</h2>
+				<ul>
+					<ui:repeat value="#{search.results}" var="result">
+						<li>#{result}</li>
+					</ui:repeat>
+				</ul>
+			</section>
+	
+			<section>
+				<h2>Input Form Example</h2>
+				<fieldset>
+					<legend>Items</legend>
+					<div>
+						<h:commandButton action="#{itemsView.search}" value="Search Items"/>
+					</div>
+				</fieldset>
+				<div class="items">
+					<ui:repeat value="#{itemsView.itemsList}" var="item" id="items">
+						<div>
+							<div>
+								<h:outputLink value="item.xhtml">
+									<f:param name="identity" value="#{item.identity}"/>
+									#{item.identity}
+								</h:outputLink>
+							</div>
+							<div>#{item.value}</div>
+							<div>
+								<ul>
+									<ui:repeat value="#{item.parents}" var="parent" id="parents">
+										<li>
+											#{parent.identity} - #{parent.value}
+										</li>
+									</ui:repeat>
+								</ul>
+							</div>
+						</div>
+					</ui:repeat>
+				</div>
+			</section>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application
+	xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/application_10.xsd"
+	version="10"
+>
+
+	<display-name>templates-ear</display-name>
+
+	<data-source>
+		<name>java:datasources/default-datasource</name>
+		<class-name>org.postgresql.xa.PGXADataSource</class-name>
+		<url>${jdbc.postgresql.url}</url>
+		<user>${jdbc.postgresql.user}</user>
+		<password>${jdbc.postgresql.password}</password>
+		<transactional>true</transactional>
+		<initial-pool-size>20</initial-pool-size>
+		<max-pool-size>20</max-pool-size>
+		<min-pool-size>20</min-pool-size>
+		<max-statements>0</max-statements>
+	</data-source>
+
+	<module>
+		<ejb>module1-logic-implementation-1.0.jar</ejb>
+	</module>
+
+	<module>
+		<ejb>module2-logic-implementation-1.0.jar</ejb>
+	</module>
+
+	<module>
+		<web>
+			<web-uri>module2-ui-web.war</web-uri>
+			<context-root>module2</context-root>
+		</web>
+	</module>
+
+	<library-directory>lib</library-directory>
+
+	<env-entry>
+		<description>test</description>
+		<env-entry-name>test</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>test value</env-entry-value>
+	</env-entry>
+
+</application>
+

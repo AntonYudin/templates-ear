@@ -1,0 +1,67 @@
+<ui:composition
+	xmlns:f="jakarta.faces.core"
+	xmlns:h="jakarta.faces.html"
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:jsf="jakarta.faces"
+	xmlns:passthrough="jakarta.faces.passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:userlocale="jakarta.faces.composite/userlocale"
+	template="/resources/layout/default.xhtml"
+>
+   <f:metadata>
+	  <f:viewParam name="identity" value="#{itemView.identity}"/>
+      <f:event type="preRenderView" listener="#{itemView.initialize}"/>
+   </f:metadata>
+
+
+	<ui:param name="layoutEnabled" value="true"/>
+	<ui:param name="themeEnabled" value="true"/>
+
+	<ui:define name="pageTitle">
+		#{messages.index}
+	</ui:define>
+
+	<ui:define name="main-sections">
+		<h:form id="form" class="item-editor">
+			<h:messages/>
+			<section jsf:rendered="#{not empty search.results}">
+				<h2>#{messages.search_results_for} #{search.query}</h2>
+				<ul>
+					<ui:repeat value="#{search.results}" var="result">
+						<li>#{result}</li>
+					</ui:repeat>
+				</ul>
+			</section>
+			<section>
+				<h2>Item</h2>
+				<fieldset>
+					<legend>Parameters</legend>
+					<div>Identity</div>
+					<div>#{itemView.item.identity}</div>
+					<div>Changed At</div>
+					<div>#{itemView.item.changedAt}</div>
+					<div>Value</div>
+					<div>
+						<h:inputText value="#{itemView.item.value}"/>
+					</div>
+					<div>Parents</div>
+					<div>
+						<ul>
+							<ui:repeat value="#{itemView.item.parents}" var="parent" id="parents">
+								<li>
+									#{parent.identity}
+								</li>
+							</ui:repeat>
+						</ul>
+					</div>
+					<div>
+						<h:commandButton action="#{itemView.update}" value="Update"/>
+					</div>
+				</fieldset>
+			</section>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>application</artifactId>
+	<packaging>ear</packaging>
+	<version>1.0</version>
+
+	<parent>
+		<groupId>com.antonyudin.templates.ear</groupId>
+		<artifactId>project</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<profiles>
+		<profile>
+			<id>tomee</id>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.eclipse.persistence</groupId>
+					<artifactId>eclipselink</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+
+	</profiles>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.antonyudin.templates.ear.module1</groupId>
+			<artifactId>model</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.antonyudin.templates.ear.module2</groupId>
+			<artifactId>model</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.antonyudin.templates.ear</groupId>
+			<artifactId>persistence</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.antonyudin.templates.ear.module1</groupId>
+			<artifactId>logic-implementation</artifactId>
+			<version>1.0</version>
+			<type>ejb</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.antonyudin.templates.ear.module2</groupId>
+			<artifactId>logic-implementation</artifactId>
+			<version>1.0</version>
+			<type>ejb</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.antonyudin.templates.ear.module2.ui</groupId>
+			<artifactId>web</artifactId>
+			<version>1.0</version>
+			<type>war</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+		</dependency>
+
+		<!--
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+		</dependency>
+		-->
+
+	</dependencies>
+
+
+	<build>
+		<!--
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		-->
+
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<id>load-properties-initialize</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>../properties.development</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven.resources.version}</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/${project.artifactId}-${project.version}/META-INF</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/src/main/${application.profile}-${database.profile}</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>${maven.ear.plugin.version}</version>
+
+				<configuration>
+
+					<filtering>true</filtering>
+					<!--
+					<applicationXml>src/main/resources/META-INF/${application.xml}</applicationXml>
+					-->
+					<generateApplicationXml>false</generateApplicationXml>
+
+					<finalName>templates-ear</finalName>
+					<version>8</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<skinnyWars>true</skinnyWars>
+					<displayName>templates-ear</displayName>
+
+					<modules>
+
+						<ejbModule>
+							<groupId>com.antonyudin.templates.ear.module1</groupId>
+							<artifactId>logic-implementation</artifactId>
+							<bundleFileName>module1-logic-implementation-1.0.jar</bundleFileName>
+						</ejbModule>
+
+						<ejbModule>
+							<groupId>com.antonyudin.templates.ear.module2</groupId>
+							<artifactId>logic-implementation</artifactId>
+							<bundleFileName>module2-logic-implementation-1.0.jar</bundleFileName>
+						</ejbModule>
+
+						<webModule>
+							<groupId>com.antonyudin.templates.ear.module2.ui</groupId>
+							<artifactId>web</artifactId>
+							<contextRoot>module2</contextRoot>
+							<bundleFileName>module2-ui-web.war</bundleFileName>
+							<unpack>true</unpack>
+						</webModule>
+
+					</modules>
+
+					<env-entries>
+
+						<env-entry>
+							<description>Test</description>
+							<env-entry-name>test</env-entry-name>
+							<env-entry-type>java.lang.String</env-entry-type>
+							<env-entry-value>test value</env-entry-value>
+						</env-entry>
+					</env-entries>
+
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+
